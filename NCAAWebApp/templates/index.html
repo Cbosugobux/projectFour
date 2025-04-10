@@ -1,94 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>NCAA Prediction App</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <title>NCAA Prediction App</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>NCAA Prediction App</h1>
+  <h1>NCAA Prediction App</h1>
 
-    <!-- Add your image here -->
-    <img src="https://media.newyorker.com/photos/65badc73c17031f273a94a9c/master/pass/240212_r43718.jpg" alt="Description of the image" style="max-width: 100%; height: auto;">    
+  <!-- Hero Image, centered via CSS -->
+  <img
+    src="https://d2b5htfb6s9xp9.cloudfront.net/images/2025/4/7/SKG_3900.JPG?width=1024&height=576&mode=crop"
+    alt="Team on the court"
+    class="centered-img"
+  >
 
-    <!-- Training Section -->
-    <section>
-        <h2>Train Model</h2>
-        <button id="trainBtn">Train and Save Model</button>
-        <div id="trainResult"></div>
-    </section>
+  <!-- Training Section -->
+  <section>
+    <h2>Train Model</h2>
+    <button id="trainBtn">Train and Save Model</button>
+    <div id="trainResult"></div>
+  </section>
 
-    <!-- Prediction Section -->
-    <section>
-        <h2>Predict Game Outcome</h2>
-        <form id="predictForm">
-            <div>
-                <label for="team1">Team 1:</label>
-                <input type="text" id="team1" name="team1" required>
-            </div>
-            <div>
-                <label for="team2">Team 2:</label>
-                <input type="text" id="team2" name="team2" required>
-            </div>
-            <button type="submit">Predict</button>
-        </form>
-        <div id="predictResult"></div>
-    </section>
+  <!-- Prediction Section -->
+  <section>
+    <h2>Predict Game Outcome</h2>
+    <form id="predictForm">
+      <div>
+        <label for="team1">Team 1:</label>
+        <input type="text" id="team1" name="team1" required>
+      </div>
+      <div>
+        <label for="team2">Team 2:</label>
+        <input type="text" id="team2" name="team2" required>
+      </div>
+      <button type="submit">Predict</button>
+    </form>
+    <div id="predictResult"></div>
+  </section>
 
-    <script>
-        // Function to call the /train endpoint
-        document.getElementById('trainBtn').addEventListener('click', function() {
-            fetch('/train', {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                let resultDiv = document.getElementById('trainResult');
-                if (data.status === "Model trained and saved successfully.") {
-                    let table = "<h3>Training Results:</h3><table border='1'><tr><th>Key</th><th>Value</th></tr>";
-                    for (const [key, value] of Object.entries(data.results)) {
-                        table += `<tr><td>${key}</td><td>${value}</td></tr>`;
-                    }
-                    table += "</table>";
-                    resultDiv.innerHTML = table;
-                } else {
-                    resultDiv.innerHTML = "<h3>Error:</h3><pre>" + JSON.stringify(data, null, 2) + "</pre>";
-                }
-            })
-            .catch(error => {
-                document.getElementById('trainResult').innerHTML = "Error: " + error;
-            });
+  <script>
+    // Train button handler
+    document.getElementById('trainBtn').addEventListener('click', () => {
+      fetch('/train', { method: 'POST' })
+        .then(r => r.json())
+        .then(data => {
+          const resultDiv = document.getElementById('trainResult');
+          if (data.status === "ok") {
+            let html = '<h3>Training Results:</h3>'
+                     + '<table class="results-table">'
+                     + '<thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>';
+            for (const [k, v] of Object.entries(data.results)) {
+              html += `<tr><td>${k}</td><td>${v}</td></tr>`;
+            }
+            html += '</tbody></table>';
+            resultDiv.innerHTML = html;
+          } else {
+            resultDiv.innerHTML = `<h3>Error:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+          }
+        })
+        .catch(err => {
+          document.getElementById('trainResult').innerHTML = `Error: ${err}`;
         });
+    });
 
-        // Function to handle the prediction form submission
-        document.getElementById('predictForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const team1 = document.getElementById('team1').value;
-            const team2 = document.getElementById('team2').value;
-            
-            fetch('/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ team1, team2 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                let resultDiv = document.getElementById('predictResult');
-                if (data.status === "success") {
-                    let table = "<h3>Prediction Results:</h3><table border='1'><tr><th>Outcome</th><th>Probability</th></tr>";
-                    table += `<tr><td>${data.result.outcome}</td><td>${data.result.probability}</td></tr>`;
-                    table += "</table>";
-                    resultDiv.innerHTML = table;
-                } else {
-                    resultDiv.innerHTML = "<h3>Error:</h3><pre>" + JSON.stringify(data, null, 2) + "</pre>";
-                }
-            })
-            .catch(error => {
-                document.getElementById('predictResult').innerHTML = "Error: " + error;
-            });
-        });
-    </script>
+    // Prediction form handler
+    document.getElementById('predictForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const team1 = document.getElementById('team1').value;
+      const team2 = document.getElementById('team2').value;
+
+      fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ team1, team2 })
+      })
+      .then(r => r.json())
+      .then(data => {
+        const resultDiv = document.getElementById('predictResult');
+        if (data.status === "success") {
+          let html = '<h3>Prediction Results:</h3>'
+                   + '<table class="results-table">'
+                   + '<thead><tr><th>Outcome</th><th>Probability</th></tr></thead>'
+                   + '<tbody>'
+                   + `<tr><td>${data.result.outcome}</td><td>${data.result.probability.toFixed(3)}</td></tr>`
+                   + '</tbody></table>';
+          resultDiv.innerHTML = html;
+        } else {
+          resultDiv.innerHTML = `<h3>Error:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+      })
+      .catch(err => {
+        document.getElementById('predictResult').innerHTML = `Error: ${err}`;
+      });
+    });
+  </script>
 </body>
 </html>

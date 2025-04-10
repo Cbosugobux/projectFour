@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background-color: rgb(200, 230, 173);
+    color: #333; /* Dark text color for better readability */
+}
+
+h1 {
+    text-align: center; /* Center the main heading */
+    color: #2C3E50; /* Darker color for the heading */
+    font-size: 36px; /* Change this value to make the header bigger or smaller */
+}
+
+section {
+    margin-bottom: 40px;
+    padding: 20px; /* Add padding inside sections */
+    background-color: #FFFFFF; /* White background for sections */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+label {
+    display: inline-block;
+    width: 120px;
+    margin-bottom: 10px;
+    font-weight: bold; /* Make labels bold */
+}
+
+/* FIXED: use straight quotes here */
+input[type="text"] {
+    width: 200px;
+    padding: 8px; /* Increased padding for better touch targets */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    transition: border-color 0.3s; /* Smooth transition for focus */
+}
+
+input[type="text"]:focus {
+    border-color: #3498DB; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+button {
+    padding: 8px 12px;
+    margin-top: 10px;
+    background-color: #3498DB; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners for buttons */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+button:hover {
+    background-color: #2980B9; /* Darker shade on hover */
+}
+
+pre {
+    background: #F4F4F4;
+    padding: 15px;
+    border: 1px solid #ccc;
+    overflow: auto;
+    border-radius: 4px; /* Rounded corners for preformatted text */
+}
+
+/* Table Styles */
+table {
+    width: 100%; /* Full width for tables */
+    border-collapse: collapse; /* Collapse borders */
+    margin-top: 20px; /* Space above tables */
+}
+
+th, td {
+    padding: 10px; /* Padding for table cells */
+    text-align: left; /* Left align text */
+    border-bottom: 1px solid #ddd; /* Bottom border for rows */
+}
+
+th {
+    background-color: #3498DB; /* Header background color */
+    color: white; /* Header text color */
+}
+
+tr:hover {
+    background-color: #F1F1F1; /* Highlight row on hover */
+}
+
+/* 1) Center an image horizontally */
+img.centered-img {
+    display: block;    /* make margin auto work */
+    margin: 0 auto;    /* center horizontally */
+    max-width: 100%;   /* prevent overflow */
+    height: auto;      /* keep aspect ratio */
+}
+
+/* 2) Stretch an image to fill its parent container */
+img.stretch-img {
+    width: 100%;       /* fill container width */
+    height: 100%;      /* fill container height */
+    object-fit: cover; /* crop/scale to cover without distortion */
+    display: block;    /* remove inline whitespace */
+}
