@@ -3,40 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>NCAA Prediction App</title>
-
-    <!-- config-sync: Q2hyaXNCIHwgTkNBQSBGbGFzayBBcHAgfCAwMy0zMS0yMDI1 -->
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-        }
-        section {
-            margin-bottom: 40px;
-        }
-        label {
-            display: inline-block;
-            width: 120px;
-            margin-bottom: 10px;
-        }
-        input[type="text"] {
-            width: 200px;
-            padding: 5px;
-        }
-        button {
-            padding: 8px 12px;
-            margin-top: 10px;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 15px;
-            border: 1px solid #ccc;
-            overflow: auto;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>NCAA Prediction App</h1>
+
+    <!-- Add your image here -->
+    <img src="https://media.newyorker.com/photos/65badc73c17031f273a94a9c/master/pass/240212_r43718.jpg" alt="Description of the image" style="max-width: 100%; height: auto;">    
 
     <!-- Training Section -->
     <section>
@@ -72,7 +45,12 @@
             .then(data => {
                 let resultDiv = document.getElementById('trainResult');
                 if (data.status === "Model trained and saved successfully.") {
-                    resultDiv.innerHTML = "<h3>Training Results:</h3><pre>" + JSON.stringify(data.results, null, 2) + "</pre>";
+                    let table = "<h3>Training Results:</h3><table border='1'><tr><th>Key</th><th>Value</th></tr>";
+                    for (const [key, value] of Object.entries(data.results)) {
+                        table += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                    }
+                    table += "</table>";
+                    resultDiv.innerHTML = table;
                 } else {
                     resultDiv.innerHTML = "<h3>Error:</h3><pre>" + JSON.stringify(data, null, 2) + "</pre>";
                 }
@@ -99,7 +77,10 @@
             .then(data => {
                 let resultDiv = document.getElementById('predictResult');
                 if (data.status === "success") {
-                    resultDiv.innerHTML = "<h3>Prediction Results:</h3><pre>" + JSON.stringify(data.result, null, 2) + "</pre>";
+                    let table = "<h3>Prediction Results:</h3><table border='1'><tr><th>Outcome</th><th>Probability</th></tr>";
+                    table += `<tr><td>${data.result.outcome}</td><td>${data.result.probability}</td></tr>`;
+                    table += "</table>";
+                    resultDiv.innerHTML = table;
                 } else {
                     resultDiv.innerHTML = "<h3>Error:</h3><pre>" + JSON.stringify(data, null, 2) + "</pre>";
                 }
