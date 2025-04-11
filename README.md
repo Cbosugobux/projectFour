@@ -70,3 +70,5 @@ Built by Team 4 in April 2025, this project combines web scraping, data analysis
 ## Data
 https://www.basketball-reference.com/
 
+#Presentation
+https://docs.google.com/presentation/d/1iHQY1JgtcHSMIgEUXnEqQRNuA6oiTjofQYEp0lu2PYY/edit#slide=id.g34881b521fd_0_0
